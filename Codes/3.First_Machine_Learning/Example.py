@@ -81,13 +81,9 @@ print('B = ', B.data.numpy())
 print(f'초기상태 : 손실 : {history[0, 1]:.4f}')
 print(f'최종상태 : 손실 : {history[-1, 1]:.4f}')
 
-# 회귀선 시각화를 위한 X_range와 Y_range 계산
-X_range = torch.linspace(min(x), max(x), 100)  # X 범위
-Y_range = pred(X_range)  # 모델로 예측한 Y 값
-
-plt.scatter(x, y, c='k', s=50)
-plt.xlabel('$X$')
-plt.ylabel('$Y$')
-plt.plot(X_range.data, Y_range.data, lw=2, c='b')
-plt.title("Relationhsip between Height & Weight")
+# 학습 곡선 시각화
+plt.plot(history[:, 0], history[:, 1], 'b')
+plt.xlabel('repeat')
+plt.ylabel('loss')
+plt.title('learning curve(loss)')
 plt.show()
