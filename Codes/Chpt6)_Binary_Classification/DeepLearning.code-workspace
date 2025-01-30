@@ -1,0 +1,23 @@
+{
+	"folders": [
+		{
+			"path": "../DeepLearningExample"
+		},
+		{
+			"path": "../.."
+		},
+		{
+			"path": "../../../Python_Basic"
+		},
+		{
+			"path": "../../../WebScrapper"
+		},
+		{
+			"path": "../../../dynamic_scaper"
+		},
+		{
+			"path": "../../../BadWord_Detector"
+		}
+	],
+	"settings": {}
+}
