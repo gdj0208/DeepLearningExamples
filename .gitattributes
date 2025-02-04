@@ -1,2 +1,10 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+*.gz filter=lfs diff=lfs merge=lfs -text
+train-images-idx3-ubyte filter=lfs diff=lfs merge=lfs -text
+data_batch_* filter=lfs diff=lfs merge=lfs -text
+test_batch filter=lfs diff=lfs merge=lfs -text
+t10k-images-idx3-ubyte filter=lfs diff=lfs merge=lfs -text
+train-labels-idx1-ubyte filter=lfs diff=lfs merge=lfs -text
+*.tar filter=lfs diff=lfs merge=lfs -text
+*.tar.gz filter=lfs diff=lfs merge=lfs -text

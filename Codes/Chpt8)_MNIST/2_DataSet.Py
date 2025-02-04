@@ -11,7 +11,7 @@ import torch.optim as optim
 from tqdm.notebook import tqdm
 
 # 다운로드 받을 디렉토리 명
-data_root = './data'
+data_root = './MNIST_data'
 
 # 데이터 다운로드
 '''
