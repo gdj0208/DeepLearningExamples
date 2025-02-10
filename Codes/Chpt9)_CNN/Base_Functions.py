@@ -2,6 +2,8 @@
 import torch
 import numpy as np
 import matplotlib.pyplot as plt
+from torch.optim.lr_scheduler import ReduceLROnPlateau
+
 
 # < 1. 손실 계산 > ===============================================
 # 손실 계산
@@ -30,7 +32,7 @@ def fit(net, optimizer, criterion, num_epochs, train_loader, test_loader, device
 
     for epoch in range(base_epochs, num_epochs+base_epochs):
         print(epoch)
-        epoch += 1
+        #epoch += 1
         
         train_loss, train_acc = (0,0)
         val_loss, val_acc = (0,0)
@@ -84,6 +86,12 @@ def fit(net, optimizer, criterion, num_epochs, train_loader, test_loader, device
 
         item = np.array([epoch, train_loss, train_acc, val_loss, val_acc])
         history = np.vstack((history, item))
+
+        # 성능 개선이 없을 시 조기 종료
+        #early_stopping = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', patience=10, verbose=True)
+        #if(early_stopping):
+        #    return history
+    
     return history
 
 # 시드값 초기화

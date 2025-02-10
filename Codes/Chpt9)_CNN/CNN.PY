@@ -31,8 +31,6 @@ transform2 = transforms.Compose([
 ])
 
 
-# < 2. 데이터셋 정의 > ======================================
-data_root = './Codes/Chpt9)_CNN/data'
 
 # 훈련 데이터셋 (1계 텐서 버전)
 train_set1 = datasets.CIFAR10(
@@ -124,7 +122,8 @@ class Net(nn.Module):
          x2 = self.relu(x1)
          x3 = self.l2(x2)
          return x3
-    
+
+'''
 # CNN 모델
 class CNN(nn.Module):
     def __init__(self, n_output, n_hidden):
@@ -157,6 +156,47 @@ class CNN(nn.Module):
          x2 = self.flatten(x1)
          x3 = self.classifier(x2)
          return x3
+'''
+
+# CNN 모델 (개선)
+class CNN(nn.Module):
+    def __init__(self, n_output, n_hidden):
+        super().__init__()
+
+        self.conv1 = nn.Conv2d(3, 32, 3)  
+        self.conv2 = nn.Conv2d(32, 32, 3)
+        self.relu = nn.ReLU(inplace=True)
+        self.maxpool = nn.MaxPool2d((2,2))
+        self.flatten = nn.Flatten()
+        self.l1 = nn.Linear(6272, n_hidden)         # 6227은 conv&pool.py에서 4.1계화 함수에서 구해졌다.
+        self.l2 = nn.Linear(n_hidden, n_hidden)     # 추가 코드 (은닉층 추가)
+        self.l3 = nn.Linear(n_hidden, n_output)
+        
+        self.dropout = nn.Dropout(0.3)              # 추가 코드 (0.5의 확률로 드롭아웃)
+
+        self.features = nn.Sequential(
+            self.conv1,
+            self.relu,
+            self.conv2,
+            self.relu,
+            self.maxpool
+        )
+
+        self.classifier = nn.Sequential(
+            self.l1,
+            self.relu,
+            self.dropout,   # 추가코드
+            self.l2,
+            self.relu,
+            self.dropout,   # 추가코드
+            self.l3
+        )
+
+    def forward(self, x):
+         x1 = self.features(x)
+         x2 = self.flatten(x1)
+         x3 = self.classifier(x2)
+         return x3
 
 # 기타 초기화
 Base_Functions.torch_seed()        # Seed값 초기화
@@ -170,7 +210,7 @@ net = CNN(n_output, n_hidden).to(device)            # CNN 모델용 코드
 criterion = nn.CrossEntropyLoss()                   # 손실 함수
 lr = 0.01                                           # 학습률
 optimizer = optim.SGD(net.parameters(), lr)         # 최적화 함수 (경사하강법)
-num_epoch = 50                                      # 반복 횟수
+num_epoch = 80                                      # 반복 횟수
 history = np.zeros((0,5))                           # 평가 결과 기록
 
 # 모델 학습
